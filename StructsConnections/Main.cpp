@@ -6,8 +6,8 @@
 
 using namespace std;
 
-Shop* Perekr;
-Shop* Diksi;
+Shop* Ашан;
+Shop* Дикси;
 
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -21,24 +21,24 @@ int main() {
 	in = json::parse(str_stream.str());
 	*/	
 
-	Perekr = Shop::Create("Перекресток");
-	Diksi = Shop::Create("Дикси");
+	Ашан = Shop::Create("Ашан");
+	Дикси = Shop::Create("Дикси");
 
 	//
 	//Product* newProduct = Product::Create();
-	//Perekr->Products->Add(newProduct);
-	//Diksi->Products->Add(newProduct);
-	//Diksi->Write();
+	//Ашан->Products->Add(newProduct);
+	//Дикси->Products->Add(newProduct);
+	//Дикси->Write();
 
-	Order* newOrder = new Order(Perekr);
+	Order* newOrder = new Order(Ашан);
 
 	for (int i = 0; i < 3; i++) {
 		Product* newProduct = Product::Create(i, "Товар" + to_string(i), 10, 100);
-		Diksi->Products->Add(newProduct);
-		Perekr->Products->Add(newProduct);
+		Дикси->Products->Add(newProduct);
+		Ашан->Products->Add(newProduct);
 		/*
 		if (i % 2 == 0) {
-			Perekr->Products->Add(newProduct);
+			Ашан->Products->Add(newProduct);
 		}
 		*/
 		newOrder->AddProduct(newProduct);		
@@ -49,10 +49,9 @@ int main() {
 	_getch();
 	Product* newProduct = Product::Create(12345, "Яблоко", 50, 500);
 	_getch();
-	Perekr->Products->Add(newProduct);
-	Diksi->Products->Add(newProduct);
+	Ашан->Products->Add(newProduct);
+	Дикси->Products->Add(newProduct);
 
-	cout << Diksi->Products->findOneByName("око")->name;
 	_getch();
 	/*
 	_getch();
@@ -77,10 +76,10 @@ int main() {
 	// product1->price = 15;
 	// product2->price = 20;
 	// product3->price = 25;
-	// Diksi->Products->Add(product0);
-	// Diksi->Products->Add(product1);
-	// Diksi->Products->Add(product2);
-	// Diksi->Products->Add(product3);
+	// Дикси->Products->Add(product0);
+	// Дикси->Products->Add(product1);
+	// Дикси->Products->Add(product2);
+	// Дикси->Products->Add(product3);
 	// 
 	// ProductStorage->Write();
 
