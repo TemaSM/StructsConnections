@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "includes.h"
 
 struct Order {
@@ -7,11 +7,11 @@ private:
 	std::vector <Product*> _Products;
 	float _costs = 0;
 public:
-	/// <summary>Уникальный идентификатор магазина</summary>
+	/// <summary>РЈРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РјР°РіР°Р·РёРЅР°</summary>
 	unsigned int id;
 	Order *_prev = NULL, *_next = NULL;
 
-	/// <summary>Вовзращает общую стоимость всех товаров в заказе</summary>
+	/// <summary>Р’РѕРІР·СЂР°С‰Р°РµС‚ РѕР±С‰СѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ РІСЃРµС… С‚РѕРІР°СЂРѕРІ РІ Р·Р°РєР°Р·Рµ</summary>
 	float Costs() {
 		return _costs;
 	};
@@ -19,55 +19,55 @@ public:
 	template<typename DBStruct>
 	friend bool SaveStruct(DBStruct _DBStruct);
 
-	/// <summary>Конструктор заказа</summary>
-	/// <param name="shop">Магазин в котором был оформлен заказ</param>
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р·Р°РєР°Р·Р°</summary>
+	/// <param name="shop">РњР°РіР°Р·РёРЅ РІ РєРѕС‚РѕСЂРѕРј Р±С‹Р» РѕС„РѕСЂРјР»РµРЅ Р·Р°РєР°Р·</param>
 	Order(Shop* shop) {
-		if (OrderStorage == NULL) { // Инициализация структуры
+		if (OrderStorage == NULL) { // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹
 			id = 0;
-			OrderStorage = this;			// Новый элемент становится текущим элементом
-			OrderStorage->_prev = NULL;		// Это хвост списка
-			OrderStorage->_next = NULL;		// Это голова списка
+			OrderStorage = this;			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			OrderStorage->_prev = NULL;		// Р­С‚Рѕ С…РІРѕСЃС‚ СЃРїРёСЃРєР°
+			OrderStorage->_next = NULL;		// Р­С‚Рѕ РіРѕР»РѕРІР° СЃРїРёСЃРєР°
 		}
-		else // Структура уже инициализирована
+		else // РЎС‚СЂСѓРєС‚СѓСЂР° СѓР¶Рµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅР°
 		{
-			// Новый элемент = this (создаваемый конструктором)			
-			this->_prev = OrderStorage;				// В новом элементе предыдуим будет текущий элемент
-			OrderStorage->_next = this;				// В текущем элемент следующим будет новый
-			OrderStorage = this;						// Новый элемент становится текущим элементом
-			this->id = (OrderStorage->_prev != NULL) ? (OrderStorage->_prev->id + 1) : 1;	// Новый уникальный идетификатор основываясь на предыдущем элементе списка				
-			this->_next = NULL;						// В текущем элементе следующими будет NULL (конец списка)
+			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ = this (СЃРѕР·РґР°РІР°РµРјС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРј)			
+			this->_prev = OrderStorage;				// Р’ РЅРѕРІРѕРј СЌР»РµРјРµРЅС‚Рµ РїСЂРµРґС‹РґСѓРёРј Р±СѓРґРµС‚ С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚
+			OrderStorage->_next = this;				// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚ СЃР»РµРґСѓСЋС‰РёРј Р±СѓРґРµС‚ РЅРѕРІС‹Р№
+			OrderStorage = this;						// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			this->id = (OrderStorage->_prev != NULL) ? (OrderStorage->_prev->id + 1) : 1;	// РќРѕРІС‹Р№ СѓРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµС‚РёС„РёРєР°С‚РѕСЂ РѕСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° РїСЂРµРґС‹РґСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃРїРёСЃРєР°				
+			this->_next = NULL;						// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃР»РµРґСѓСЋС‰РёРјРё Р±СѓРґРµС‚ NULL (РєРѕРЅРµС† СЃРїРёСЃРєР°)
 		}
 		this->_Shop = shop;
 		OrderStorage->Save();
 	};
 
-	/// <summary>Добавляет товар корзину заказа</summary>
+	/// <summary>Р”РѕР±Р°РІР»СЏРµС‚ С‚РѕРІР°СЂ РєРѕСЂР·РёРЅСѓ Р·Р°РєР°Р·Р°</summary>
 	std::vector <Product*> AddProduct(Product* product, unsigned int quantity = 1) {
 		for (Product* _product : this->_Shop->Products->All()) {
 			if (product->id == _product->id) {
 				if (product->quantity - quantity >= 0) {
 					this->_costs = this->_costs + (quantity * product->price);
-					product->quantity -= quantity;			// Уменьшаем кол-во товара
-					this->_Products.push_back(product);		// Добавляет в массив указатель на сам товар
+					product->quantity -= quantity;			// РЈРјРµРЅСЊС€Р°РµРј РєРѕР»-РІРѕ С‚РѕРІР°СЂР°
+					this->_Products.push_back(product);		// Р”РѕР±Р°РІР»СЏРµС‚ РІ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР°Рј С‚РѕРІР°СЂ
 				}
 			}
 		}
 		OrderStorage->Save();
 		return this->_Products;
 	};
-	/// <summary>Сохранение компии товара внутри заказа</summary>
+	/// <summary>РЎРѕС…СЂР°РЅРµРЅРёРµ РєРѕРїРёРё С‚РѕРІР°СЂР° РІРЅСѓС‚СЂРё Р·Р°РєР°Р·Р°</summary>
 	bool backupProduct(Product* product) {
 		for (Product* _product : this->_Products) {
 			if (product->id == _product->id) {
-				_product->available = false; // Товар более не доступен
+				_product->available = false; // РўРѕРІР°СЂ Р±РѕР»РµРµ РЅРµ РґРѕСЃС‚СѓРїРµРЅ
 				ProductStorage->Save();
 				OrderStorage->Save();
-				return true; // Успешно сохранили товар
+				return true; // РЈСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРёР»Рё С‚РѕРІР°СЂ
 			}
 		}
-		return false; // Не стаи сохранять товар (его нет в заказе)
+		return false; // РќРµ СЃС‚Р°Рё СЃРѕС…СЂР°РЅСЏС‚СЊ С‚РѕРІР°СЂ (РµРіРѕ РЅРµС‚ РІ Р·Р°РєР°Р·Рµ)
 	};
-	/// <summary>Сохраняет данные на диск</summary>
+	/// <summary>РЎРѕС…СЂР°РЅСЏРµС‚ РґР°РЅРЅС‹Рµ РЅР° РґРёСЃРє</summary>
 	static bool Save() {
 		return SaveStruct(OrderStorage);
 	};

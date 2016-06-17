@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -7,6 +7,8 @@
 
 using namespace std;
 using json = nlohmann::json;
+
+/*-------------------------------*/
 
 struct Product;
 struct Shop;

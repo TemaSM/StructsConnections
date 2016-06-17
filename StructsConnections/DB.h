@@ -1,12 +1,25 @@
 ﻿#pragma once
 #include "includes.h"
 
+namespace DB {
+	/// <summary>Синхронизация данных структор с БД на диске</summary>
+	bool SyncData() {
+		bool success = false;
+		success = ProductStorage->Save();
+		success = ShopStorage->Save();
+		success = OrderStorage->Save();
+		return success;
+	};
+}
+
 template<typename DBStruct>
+/// <summary>Сохранение всей структуры в файл на диске</summary>
 bool SaveStruct(DBStruct _DBStruct) {
 	json DataJSON;
 	ofstream fs;
 	const char* type_name = typeid(_DBStruct).name();
 
+	// ProductStorage->Save()
 	if (type_name == typeid(ProductStorage).name())
 	{
 		Product* product = ProductStorage;
@@ -23,6 +36,7 @@ bool SaveStruct(DBStruct _DBStruct) {
 		}
 		fs.open("Products.json"); // Открываем файл
 	}
+	// ShopStorage->Save()
 	else if (type_name == typeid(ShopStorage).name())
 	{
 		Shop* shop = ShopStorage;
@@ -38,6 +52,7 @@ bool SaveStruct(DBStruct _DBStruct) {
 		}
 		fs.open("Shops.json");	// Открываем файл
 	}
+	// OrderStorage->Save()
 	else if (type_name == typeid(OrderStorage).name())
 	{
 		Order* order = OrderStorage;
@@ -49,6 +64,7 @@ bool SaveStruct(DBStruct _DBStruct) {
 			};
 
 			for (Product* product : order->_Products) {
+				// Если товар будет удалён из магазина, сохраним его копию прямо в заказе
 				if (product->available == false) {
 					DataJSON[order->id]["Products"].push_back({
 						{ "id", product->id },
@@ -59,6 +75,7 @@ bool SaveStruct(DBStruct _DBStruct) {
 						{ "available", product->available }
 					});
 				}
+				// Товар не будет удалён, поэтому просто оставляем в массиве его ID
 				else {
 					DataJSON[order->id]["Products"].push_back(product->id);
 				}
@@ -74,20 +91,3 @@ bool SaveStruct(DBStruct _DBStruct) {
 	fs.close();					// Закрываем stream
 	return true;
 }
-
-namespace DB {
-	/// <summary>Синхронизация данных структор с БД на диске</summary>
-	bool SyncData() {
-		bool success = false;
-		success = ProductStorage->Save();
-		success = ShopStorage->Save();
-		success = OrderStorage->Save();
-		return success;
-	};
-}
-/*
-template<typename T> struct type_name
-{
-	static const char* name() { static_assert(false, "You are missing a DECL_TYPE_NAME"); }
-};
-*/

@@ -1,87 +1,87 @@
-#pragma once
+п»ї#pragma once
 #include "includes.h";
 
 struct Shop {
 
 private:
-	/// <summary>Заказы/покупки в магазине</summary>
+	/// <summary>Р—Р°РєР°Р·С‹/РїРѕРєСѓРїРєРё РІ РјР°РіР°Р·РёРЅРµ</summary>
 	std::vector <Order> _Orders;
 public:
-	/// <summary>Уникальный идентификатор магазина</summary>
+	/// <summary>РЈРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РјР°РіР°Р·РёРЅР°</summary>
 	unsigned int id = 0;
-	/// <summary>Название магазина</summary>
-	string name = "Магазин";
+	/// <summary>РќР°Р·РІР°РЅРёРµ РјР°РіР°Р·РёРЅР°</summary>
+	string name = "РњР°РіР°Р·РёРЅ";
 	Shop *_prev = NULL, *_next = NULL;
 
 	template<typename DBStruct>
 	friend bool SaveStruct(DBStruct _DBStruct);
 
-	/// <summary>Конструктор магазина</summary>
-	Shop(string name = "Магазин") {
-		if (ShopStorage == NULL) { // Инициализация структуры
-			ShopStorage = this;			// Новый элемент становится текущим элементом
-			ShopStorage->_prev = NULL;	// Это хвост списка
-			ShopStorage->_next = NULL;	// Это голова списка
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РјР°РіР°Р·РёРЅР°</summary>
+	Shop(string name = "РњР°РіР°Р·РёРЅ") {
+		if (ShopStorage == NULL) { // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹
+			ShopStorage = this;			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			ShopStorage->_prev = NULL;	// Р­С‚Рѕ С…РІРѕСЃС‚ СЃРїРёСЃРєР°
+			ShopStorage->_next = NULL;	// Р­С‚Рѕ РіРѕР»РѕРІР° СЃРїРёСЃРєР°
 		}
-		else // Структура уже инициализирована
+		else // РЎС‚СЂСѓРєС‚СѓСЂР° СѓР¶Рµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅР°
 		{
-			// Новый элемент = this (создаваемый конструктором)			
-			this->_prev = ShopStorage;				// В новом элементе предыдуим будет текущий элемент
-			ShopStorage->_next = this;				// В текущем элемент следующим будет новый
-			ShopStorage = this;						// Новый элемент становится текущим элементом
-			this->id = (ShopStorage->_prev != NULL) ? (ShopStorage->_prev->id + 1) : 1;	// Новый уникальный идетификатор основываясь на предыдущем элементе списка				
-			this->_next = NULL;						// В текущем элементе следующими будет NULL (конец списка)
+			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ = this (СЃРѕР·РґР°РІР°РµРјС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРј)			
+			this->_prev = ShopStorage;				// Р’ РЅРѕРІРѕРј СЌР»РµРјРµРЅС‚Рµ РїСЂРµРґС‹РґСѓРёРј Р±СѓРґРµС‚ С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚
+			ShopStorage->_next = this;				// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚ СЃР»РµРґСѓСЋС‰РёРј Р±СѓРґРµС‚ РЅРѕРІС‹Р№
+			ShopStorage = this;						// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			this->id = (ShopStorage->_prev != NULL) ? (ShopStorage->_prev->id + 1) : 1;	// РќРѕРІС‹Р№ СѓРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµС‚РёС„РёРєР°С‚РѕСЂ РѕСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° РїСЂРµРґС‹РґСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃРїРёСЃРєР°				
+			this->_next = NULL;						// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃР»РµРґСѓСЋС‰РёРјРё Р±СѓРґРµС‚ NULL (РєРѕРЅРµС† СЃРїРёСЃРєР°)
 		}
-		if (name != "Магазин") this->name = name; // Если при вызове конструктора указали название магазина, используем его
+		if (name != "РњР°РіР°Р·РёРЅ") this->name = name; // Р•СЃР»Рё РїСЂРё РІС‹Р·РѕРІРµ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° СѓРєР°Р·Р°Р»Рё РЅР°Р·РІР°РЅРёРµ РјР°РіР°Р·РёРЅР°, РёСЃРїРѕР»СЊР·СѓРµРј РµРіРѕ
 		ShopStorage->Save();
 	};
 
-	/// <summary>Конструктор магазина</summary>
-	static Shop* Create(string name = "Магазин") {
-		Shop* newShop = new Shop(); // Исползутеся конструктор, так что id автоматически будет установлен
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РјР°РіР°Р·РёРЅР°</summary>
+	static Shop* Create(string name = "РњР°РіР°Р·РёРЅ") {
+		Shop* newShop = new Shop(); // РСЃРїРѕР»Р·СѓС‚РµСЃСЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, С‚Р°Рє С‡С‚Рѕ id Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё Р±СѓРґРµС‚ СѓСЃС‚Р°РЅРѕРІР»РµРЅ
 		newShop->name = name;
 		ShopStorage->Save();
 		return newShop;
 	};
 
-	/// <summary>Сохраняет данные на диск</summary>
+	/// <summary>РЎРѕС…СЂР°РЅСЏРµС‚ РґР°РЅРЅС‹Рµ РЅР° РґРёСЃРє</summary>
 	static bool Save() {
 		return SaveStruct(ShopStorage);
 	};
 
-	/// <summary>Товары в магазине</summary>
+	/// <summary>РўРѕРІР°СЂС‹ РІ РјР°РіР°Р·РёРЅРµ</summary>
 	struct products {
 	private:
-		std::vector <Product*> _Products; // Тут храним указатели на структуры самих товаров
+		std::vector <Product*> _Products; // РўСѓС‚ С…СЂР°РЅРёРј СѓРєР°Р·Р°С‚РµР»Рё РЅР° СЃС‚СЂСѓРєС‚СѓСЂС‹ СЃР°РјРёС… С‚РѕРІР°СЂРѕРІ
 	public:
-		/// <summary>Все товары этого магазина</summary>
-		/// <returns>Вовзращает массив товаров (vector)</returns>
+		/// <summary>Р’СЃРµ С‚РѕРІР°СЂС‹ СЌС‚РѕРіРѕ РјР°РіР°Р·РёРЅР°</summary>
+		/// <returns>Р’РѕРІР·СЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ С‚РѕРІР°СЂРѕРІ (vector)</returns>
 		std::vector <Product*> All() {
 			return _Products;
 		};
 
-		/// <summary>Выбор товара из массива по индексу</summary>
-		/// <param name="index">Индекс по которому будет выбран товар</param>
-		/// <returns>Возвращает товар</returns>
+		/// <summary>Р’С‹Р±РѕСЂ С‚РѕРІР°СЂР° РёР· РјР°СЃСЃРёРІР° РїРѕ РёРЅРґРµРєСЃСѓ</summary>
+		/// <param name="index">РРЅРґРµРєСЃ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ Р±СѓРґРµС‚ РІС‹Р±СЂР°РЅ С‚РѕРІР°СЂ</param>
+		/// <returns>Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РѕРІР°СЂ</returns>
 		Product* get(int index) {
 			try {
-				return _Products[index]; // При выходе за пределы, вываливается ошибка out_of_range
+				return _Products[index]; // РџСЂРё РІС‹С…РѕРґРµ Р·Р° РїСЂРµРґРµР»С‹, РІС‹РІР°Р»РёРІР°РµС‚СЃСЏ РѕС€РёР±РєР° out_of_range
 			}
 			catch (...) {
-				return _Products[0]; // В таком случае просто отдаем нулевой элемент
+				return _Products[0]; // Р’ С‚Р°РєРѕРј СЃР»СѓС‡Р°Рµ РїСЂРѕСЃС‚Рѕ РѕС‚РґР°РµРј РЅСѓР»РµРІРѕР№ СЌР»РµРјРµРЅС‚
 			}
 		};
 
-		/// <summary>Поиск товара по ID</summary>
-		/// <param name="ID">Идентификатор товара</param>
+		/// <summary>РџРѕРёСЃРє С‚РѕРІР°СЂР° РїРѕ ID</summary>
+		/// <param name="ID">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РѕРІР°СЂР°</param>
 		Product* findByID(unsigned int ID) {
 			for (Product* product : this->_Products) {
 				if (product->id == ID) return product;
 			}
 		};
 
-		/// <summary>Поиск индекса товара по ID</summary>
-		/// <param name="ID">Идентификатор товара</param>
+		/// <summary>РџРѕРёСЃРє РёРЅРґРµРєСЃР° С‚РѕРІР°СЂР° РїРѕ ID</summary>
+		/// <param name="ID">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РѕРІР°СЂР°</param>
 		unsigned int findIndexByID(unsigned int ID) {
 			int index = 0;
 			for (Product* product : this->_Products) {
@@ -91,8 +91,8 @@ public:
 			return NULL;
 		};
 
-		/// <summary>Поиск всех товаров по имени при частичном совпадении</summary>
-		/// <param name="chars">Символы для частичного совпадения (с учетом регистра)</param>
+		/// <summary>РџРѕРёСЃРє РІСЃРµС… С‚РѕРІР°СЂРѕРІ РїРѕ РёРјРµРЅРё РїСЂРё С‡Р°СЃС‚РёС‡РЅРѕРј СЃРѕРІРїР°РґРµРЅРёРё</summary>
+		/// <param name="chars">РЎРёРјРІРѕР»С‹ РґР»СЏ С‡Р°СЃС‚РёС‡РЅРѕРіРѕ СЃРѕРІРїР°РґРµРЅРёСЏ (СЃ СѓС‡РµС‚РѕРј СЂРµРіРёСЃС‚СЂР°)</param>
 		std::vector <Product*> findByName(string chars) {
 			std::vector <Product*> _products;
 			for (Product* product : this->_Products) {
@@ -101,25 +101,25 @@ public:
 			return _products;
 		};
 
-		/// <summary>Поиск товара по имени при частичном совпадении</summary>
-		/// <param name="chars">Символы для частичного совпадения (с учетом регистра)</param>
+		/// <summary>РџРѕРёСЃРє С‚РѕРІР°СЂР° РїРѕ РёРјРµРЅРё РїСЂРё С‡Р°СЃС‚РёС‡РЅРѕРј СЃРѕРІРїР°РґРµРЅРёРё</summary>
+		/// <param name="chars">РЎРёРјРІРѕР»С‹ РґР»СЏ С‡Р°СЃС‚РёС‡РЅРѕРіРѕ СЃРѕРІРїР°РґРµРЅРёСЏ (СЃ СѓС‡РµС‚РѕРј СЂРµРіРёСЃС‚СЂР°)</param>
 		Product* findOneByName(string chars) {
 			for (Product* product : this->_Products) {
 				if (product->name.find(chars) != std::string::npos) return product;
 			}
 		};
 
-		/// <summary>Добавляет товар в магазин и возвращает массив со всеми товарами</summary>
+		/// <summary>Р”РѕР±Р°РІР»СЏРµС‚ С‚РѕРІР°СЂ РІ РјР°РіР°Р·РёРЅ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ СЃРѕ РІСЃРµРјРё С‚РѕРІР°СЂР°РјРё</summary>
 		std::vector <Product*> Add(Product* product) {
-			this->_Products.push_back(product); // Добавляет в массив указатель на сам товар
+			this->_Products.push_back(product); // Р”РѕР±Р°РІР»СЏРµС‚ РІ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР°Рј С‚РѕРІР°СЂ
 			ShopStorage->Save();
 			return this->_Products;
 		};
 
-		/// <summary>Удаление товара из магазина</summary>
+		/// <summary>РЈРґР°Р»РµРЅРёРµ С‚РѕРІР°СЂР° РёР· РјР°РіР°Р·РёРЅР°</summary>
 		static bool Remove(Product* product) {
 			// Order::backupProduct(product);
-			Shop* shop = ShopStorage;	// Будем проходить по каждому магазину
+			Shop* shop = ShopStorage;	// Р‘СѓРґРµРј РїСЂРѕС…РѕРґРёС‚СЊ РїРѕ РєР°Р¶РґРѕРјСѓ РјР°РіР°Р·РёРЅСѓ
 			while (shop != NULL) {
 				unsigned int index = 0;
 				for (Product* _product : shop->Products->_Products) {

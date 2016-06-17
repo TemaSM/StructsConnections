@@ -1,47 +1,47 @@
-#pragma once
+п»ї#pragma once
 #include "includes.h";
 
 struct Product {
-	/// <summary>Уникальный идентификатор товара</summary>
+	/// <summary>РЈРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РѕРІР°СЂР°</summary>
 	unsigned int id = 0;
-	/// <summary>Артикул товара</summary>
+	/// <summary>РђСЂС‚РёРєСѓР» С‚РѕРІР°СЂР°</summary>
 	unsigned int vendorCode = NULL;
-	/// <summary>Название товара</summary>
-	string name = "Товар";
-	/// <summary>Стоимость товара за шт.</summary>
+	/// <summary>РќР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°</summary>
+	string name = "РўРѕРІР°СЂ";
+	/// <summary>РЎС‚РѕРёРјРѕСЃС‚СЊ С‚РѕРІР°СЂР° Р·Р° С€С‚.</summary>
 	float price = 1;
-	/// <summary>Доступность товара</summary>
+	/// <summary>Р”РѕСЃС‚СѓРїРЅРѕСЃС‚СЊ С‚РѕРІР°СЂР°</summary>
 	bool available = true;
-	/// <summary>Кол-во товара на складе поставщика</summary>
+	/// <summary>РљРѕР»-РІРѕ С‚РѕРІР°СЂР° РЅР° СЃРєР»Р°РґРµ РїРѕСЃС‚Р°РІС‰РёРєР°</summary>
 	unsigned int quantity = 1;
-	Product *_prev = NULL;		// Указывает на предыдущий (текущий элемент списка)
-	Product *_next = NULL;		// Указывает на следующий (последний добавленный элемент списка)
+	Product *_prev = NULL;		// РЈРєР°Р·С‹РІР°РµС‚ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ (С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР°)
+	Product *_next = NULL;		// РЈРєР°Р·С‹РІР°РµС‚ РЅР° СЃР»РµРґСѓСЋС‰РёР№ (РїРѕСЃР»РµРґРЅРёР№ РґРѕР±Р°РІР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР°)
 
 	template<typename DBStruct>
 	friend bool SaveStruct(DBStruct _DBStruct);
 
-	/// <summary>Конструктор товара</summary>
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ С‚РѕРІР°СЂР°</summary>
 	Product() {
-		if (ProductStorage == NULL) { // Инициализация структуры
+		if (ProductStorage == NULL) { // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹
 			id = 0;
-			ProductStorage = this;			// Новый элемент становится текущим элементом
-			ProductStorage->_prev = NULL;	// Это хвост списка
-			ProductStorage->_next = NULL;	// Это голова списка
+			ProductStorage = this;			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			ProductStorage->_prev = NULL;	// Р­С‚Рѕ С…РІРѕСЃС‚ СЃРїРёСЃРєР°
+			ProductStorage->_next = NULL;	// Р­С‚Рѕ РіРѕР»РѕРІР° СЃРїРёСЃРєР°
 		}
-		else // Структура уже инициализирована
+		else // РЎС‚СЂСѓРєС‚СѓСЂР° СѓР¶Рµ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅР°
 		{
-			// Новый элемент = this (создаваемый конструктором)			
-			this->_prev = ProductStorage;				// В новом элементе предыдуим будет текущий элемент
-			ProductStorage->_next = this;				// В текущем элемент следующим будет новый
-			ProductStorage = this;						// Новый элемент становится текущим элементом
-			this->id = (ProductStorage->_prev != NULL) ? (ProductStorage->_prev->id + 1) : 1;	// Новый уникальный идетификатор основываясь на предыдущем элементе списка
-			this->_next = NULL;							// В текущем элементе следующими будет NULL (конец списка)
+			// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ = this (СЃРѕР·РґР°РІР°РµРјС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРј)			
+			this->_prev = ProductStorage;				// Р’ РЅРѕРІРѕРј СЌР»РµРјРµРЅС‚Рµ РїСЂРµРґС‹РґСѓРёРј Р±СѓРґРµС‚ С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚
+			ProductStorage->_next = this;				// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚ СЃР»РµРґСѓСЋС‰РёРј Р±СѓРґРµС‚ РЅРѕРІС‹Р№
+			ProductStorage = this;						// РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ С‚РµРєСѓС‰РёРј СЌР»РµРјРµРЅС‚РѕРј
+			this->id = (ProductStorage->_prev != NULL) ? (ProductStorage->_prev->id + 1) : 1;	// РќРѕРІС‹Р№ СѓРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµС‚РёС„РёРєР°С‚РѕСЂ РѕСЃРЅРѕРІС‹РІР°СЏСЃСЊ РЅР° РїСЂРµРґС‹РґСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃРїРёСЃРєР°
+			this->_next = NULL;							// Р’ С‚РµРєСѓС‰РµРј СЌР»РµРјРµРЅС‚Рµ СЃР»РµРґСѓСЋС‰РёРјРё Р±СѓРґРµС‚ NULL (РєРѕРЅРµС† СЃРїРёСЃРєР°)
 		}
 		ProductStorage->Save();
 	};
 
-	/// <summary>Конструктор товара в inline стиле</summary>
-	static Product* Create(unsigned int vendorCode, string name = "Товар", float price = 1, unsigned int quantity = 1) {
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ С‚РѕРІР°СЂР° РІ inline СЃС‚РёР»Рµ</summary>
+	static Product* Create(unsigned int vendorCode, string name = "РўРѕРІР°СЂ", float price = 1, unsigned int quantity = 1) {
 		Product* newProduct = new Product();
 		newProduct->vendorCode = vendorCode;
 		newProduct->name = name;
@@ -51,19 +51,19 @@ struct Product {
 		return newProduct;
 	};
 
-	/// <summary>Конструктор товара в стиле интерфейса</summary>
+	/// <summary>РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ С‚РѕРІР°СЂР° РІ СЃС‚РёР»Рµ РёРЅС‚РµСЂС„РµР№СЃР°</summary>
 	static Product* Create() {
 		Product* newProduct = new Product();
-		cout << "Название товара: "; // Console::UI::write("Название товара: ");
+		cout << "РќР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°: "; // Console::UI::write("РќР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°: ");
 		cin >> newProduct->name;
 		// scanf_s("%s", &newProduct->name);
-		cout << "Артикул [целое число]: "; // Console::UI::write("Артикул [целое число]: ");
+		cout << "РђСЂС‚РёРєСѓР» [С†РµР»РѕРµ С‡РёСЃР»Рѕ]: "; // Console::UI::write("РђСЂС‚РёРєСѓР» [С†РµР»РѕРµ С‡РёСЃР»Рѕ]: ");
 		cin >> newProduct->vendorCode;
 		//scanf_s("%u", &newProduct->vendorCode);
-		cout << "Стоимость в у.е. (с плавающей точкой) : "; //Console::UI::write("Стоимость в у.е. (с плавающей точкой) : ");
+		cout << "РЎС‚РѕРёРјРѕСЃС‚СЊ РІ Сѓ.Рµ. (СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№) : "; //Console::UI::write("РЎС‚РѕРёРјРѕСЃС‚СЊ РІ Сѓ.Рµ. (СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№) : ");
 															//scanf_s("%li", &newProduct->quantity);
 		cin >> newProduct->price;
-		cout << "Количество на складе [целое число]: "; // Console::UI::write("Количество на складе [целое число]: ");
+		cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ РЅР° СЃРєР»Р°РґРµ [С†РµР»РѕРµ С‡РёСЃР»Рѕ]: "; // Console::UI::write("РљРѕР»РёС‡РµСЃС‚РІРѕ РЅР° СЃРєР»Р°РґРµ [С†РµР»РѕРµ С‡РёСЃР»Рѕ]: ");
 		cin >> newProduct->quantity;
 		//scanf_s("%u", &newProduct->quantity);
 		// Console::UI::wait(0);
@@ -71,7 +71,7 @@ struct Product {
 		return newProduct;
 	};
 
-	/// <summary>Удаление товара из магазина</summary>
+	/// <summary>РЈРґР°Р»РµРЅРёРµ С‚РѕРІР°СЂР° РёР· РјР°РіР°Р·РёРЅР°</summary>
 	/*bool Remove(Product* product) {
 	ShopStorage->Products
 	// Order::backupProduct(product);
@@ -85,7 +85,7 @@ struct Product {
 	return false;
 	};*/
 
-	/// <summary>Сохраняет данные на диск</summary>
+	/// <summary>РЎРѕС…СЂР°РЅСЏРµС‚ РґР°РЅРЅС‹Рµ РЅР° РґРёСЃРє</summary>
 	static bool Save() {
 		return SaveStruct(ProductStorage);
 	};
