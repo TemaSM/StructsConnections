@@ -2,8 +2,8 @@
 #include "includes.h"
 
 namespace DB {
-	/// <summary>Синхронизация данных структор с БД на диске</summary>
-	bool SyncData() {
+	/// <summary>Принудительное сохранение структур в БД на диске</summary>
+	bool Save() {
 		bool success = false;
 		success = ProductStorage->Save();
 		success = ShopStorage->Save();
@@ -84,10 +84,21 @@ bool SaveStruct(DBStruct _DBStruct) {
 		}
 		fs.open("Orders.json");	// Открываем файл
 	}
-	else return false;
+	else
+		return false;
 
 	if (!fs) return false;		// Если не удалось, возвращаем false
 	fs << DataJSON.dump(2);		// Отправляем JSON
 	fs.close();					// Закрываем stream
 	return true;
 }
+
+//TODO: Чтение данных с диска
+/*
+std::ifstream str_stream;
+//ofstream fout("test.json");
+ifstream fin("test.json");
+
+str_stream << fin.rdbuf();
+in = json::parse(str_stream.str());
+*/

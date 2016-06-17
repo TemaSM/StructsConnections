@@ -3,13 +3,17 @@
 
 struct Order {
 private:
+	/// <summary>Магазин которому принадлежит заказ</summary>
 	Shop* _Shop;
-	std::vector <Product*> _Products;
 	float _costs = 0;
 public:
 	/// <summary>Уникальный идентификатор магазина</summary>
 	unsigned int id;
 	Order *_prev = NULL, *_next = NULL;
+
+
+	/// <summary>Все товары в заказе</summary>
+	std::vector <Product*> _Products;
 
 	/// <summary>Вовзращает общую стоимость всех товаров в заказе</summary>
 	float Costs() {
@@ -37,8 +41,10 @@ public:
 			this->id = (OrderStorage->_prev != NULL) ? (OrderStorage->_prev->id + 1) : 1;	// Новый уникальный идетификатор основываясь на предыдущем элементе списка				
 			this->_next = NULL;						// В текущем элементе следующими будет NULL (конец списка)
 		}
-		this->_Shop = shop;
+		this->_Shop = shop;					// Устанавливаем связь с магазином
+		shop->Orders.push_back(this);		// Добавляем текущий заказ в массив заказов/покупок магазина
 		OrderStorage->Save();
+		ShopStorage->Save();
 	};
 
 	/// <summary>Добавляет товар корзину заказа</summary>
@@ -65,7 +71,7 @@ public:
 				return true; // Успешно сохранили товар
 			}
 		}
-		return false; // Не стаи сохранять товар (его нет в заказе)
+		return false; // Не стали сохранять товар (его нет в заказе)
 	};
 	/// <summary>Сохраняет данные на диск</summary>
 	static bool Save() {

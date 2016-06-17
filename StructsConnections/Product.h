@@ -71,19 +71,11 @@ struct Product {
 		return newProduct;
 	};
 
-	/// <summary>Удаление товара из магазина</summary>
-	/*bool Remove(Product* product) {
-	ShopStorage->Products
-	// Order::backupProduct(product);
-	unsigned int index = NULL;
-	index = this->findIndexByID(product->id);
-	if (index != NULL) {
-	this->_Products.erase(this->_Products.begin() + index);
-	ShopStorage->Save();
-	return true;
+	/// <summary>Удаление товара</summary>
+	bool Delete(Product* product) {
+		delete product;
+		ProductStorage->Save();
 	}
-	return false;
-	};*/
 
 	/// <summary>Сохраняет данные на диск</summary>
 	static bool Save() {

@@ -3,9 +3,6 @@
 
 struct Shop {
 
-private:
-	/// <summary>Заказы/покупки в магазине</summary>
-	std::vector <Order> _Orders;
 public:
 	/// <summary>Уникальный идентификатор магазина</summary>
 	unsigned int id = 0;
@@ -15,6 +12,9 @@ public:
 
 	template<typename DBStruct>
 	friend bool SaveStruct(DBStruct _DBStruct);
+
+	/// <summary>Заказы/покупки в магазине</summary>
+	std::vector <Order*> Orders;
 
 	/// <summary>Конструктор магазина</summary>
 	Shop(string name = "Магазин") {
@@ -118,7 +118,7 @@ public:
 
 		/// <summary>Удаление товара из магазина</summary>
 		static bool Remove(Product* product) {
-			// Order::backupProduct(product);
+			//TODO: Обратимся ко всем заказам с просьбой сохранить этот товар у себя - Order::backupProduct(product);
 			Shop* shop = ShopStorage;	// Будем проходить по каждому магазину
 			while (shop != NULL) {
 				unsigned int index = 0;

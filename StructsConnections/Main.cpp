@@ -6,114 +6,46 @@
 
 using namespace std;
 
-Shop* Ашан;
-Shop* Дикси;
+Shop* shop;
+Product* product;
 
 int main() {
 	setlocale(LC_ALL, "Russian");
 
-	/*
-	std::ifstream str_stream;
-	//ofstream fout("test.json");
-	ifstream fin("test.json");
+	DB::Save(); // Т.к. сейчас нет никаких данных в структурах программы, БД просто очищается
+	shop = new Shop();
+	product = new Product();
 
-	str_stream << fin.rdbuf();
-	in = json::parse(str_stream.str());
-	*/	
+	cout << "Введите название создаваемого магазина: \n";
+	cin >> shop->name;	
+	cout << "--- Создание нового товара ---\n" ;	
+	cout << "Название товара: \n";
+	cin >> product->name;
+	cout << "Артикул товара: \n";
+	cin >> product->vendorCode;
+	cout << "Стоимость товара: \n";
+	cin >> product->price;
+	cout << "Кол-во на складе: \n";
+	cin >> product->quantity;
+	ProductStorage->Save(); // Сохраняем все товары в БД на диске
 
-	Ашан = Shop::Create("Ашан");
-	Дикси = Shop::Create("Дикси");
-
-	//
-	//Product* newProduct = Product::Create();
-	//Ашан->Products->Add(newProduct);
-	//Дикси->Products->Add(newProduct);
-	//Дикси->Write();
-
-	Order* newOrder = new Order(Ашан);
-
-	for (int i = 0; i < 3; i++) {
-		Product* newProduct = Product::Create(i, "Товар" + to_string(i), 10, 100);
-		Дикси->Products->Add(newProduct);
-		Ашан->Products->Add(newProduct);
-		/*
-		if (i % 2 == 0) {
-			Ашан->Products->Add(newProduct);
-		}
-		*/
-		newOrder->AddProduct(newProduct);		
+	cout << "Присвоить товар " << product->name << " к магазину " << shop->name << " ?\n";
+	char inputKey = _getch();
+	switch (inputKey) {
+		case 'y':
+			shop->Products->Add(product); // Добавляю товар в магазин
+		break;
 	}
-
-	printf("Синхронизация данных ...");
-	DB::SyncData();
+	DB::Save(); // Сохраняю все данные в БД на диск
+	Order* order = new Order(shop);
+	order->AddProduct(product); // Добавляю товар в заказ
+	cout << "Стоимость всех товаров в заказе: " << order->Costs();
 	_getch();
-	Product* newProduct = Product::Create(12345, "Яблоко", 50, 500);
-	_getch();
-	Ашан->Products->Add(newProduct);
-	Дикси->Products->Add(newProduct);
 
-	_getch();
-	/*
-	_getch();
-	newOrder->AddProduct(newProduct, 3);
-	_getch();
-	newOrder->backupProduct(newProduct);*/
-	
-	// ShopStorage->Products->Remove(newProduct);
-	
-	/*
-	cout << "Сохранение товаров: " << ProductStorage->Save() << endl;
-	cout << "Сохранение магазинов: " << ShopStorage->Save() << endl;
-	cout << "Сохранение заказов: " << OrderStorage->Save() << endl;
-	*/
+	order->backupProduct(product);	// Сохраняю информацию о товаре во все заказы магазина
+	cout << "Резервная копия товара " << product->name << " успешно сохранена во всех заказах магазина " << shop->name << endl;
+	// shop->Products->Remove(product); // Удаление товара из магазина
+	// product->Delete(); // Удаление товара из БД
 
-	// Product *product0, *product1, *product2, *product3;
-	// product0->name = "Яблоко";
-	// product1->name = "Яблочко";
-	// product2->name = "Апельсин";
-	// product3->name = "Ананас";
-	// product0->price = 10;
-	// product1->price = 15;
-	// product2->price = 20;
-	// product3->price = 25;
-	// Дикси->Products->Add(product0);
-	// Дикси->Products->Add(product1);
-	// Дикси->Products->Add(product2);
-	// Дикси->Products->Add(product3);
-	// 
-	// ProductStorage->Write();
-
-	// Поиск
-	/*
-	for (Product product : MainShop->Products->findByName("Ябл")) {
-		cout << product->price << endl;
-	}
-	*/
-	
-	
-	/*
-	MainShop->Products.push_back(product0);
-	MainShop->Products.push_back(product1);
-	MainShop->Products.push_back(product2);
-	MainShop->Products.push_back(product3);
-	// cout << MainShop->Products.at(2)->name << endl;
-
-	Order order0;
-	// order0->price = product0->price + product1->price;
-	order0.Products.push_back(product0);
-	order0.Products.push_back(product1);
-	
-	Client client0;
-	client0.fisrtName = "Артем";
-	client0.lastName = "Смирнов";
-	client0.Orders.push_back(order0);
-
-	order0.client = &client0;
-
-	MainShop->Orders.push_back(order0);
-	MainShop->Clients.push_back(client0);
-	*/
-	
-	// cout << MainShop->Products->get(4)->name << endl;
-	// system("pause");
+	system("pause");
 }
