@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "includes.h";
 
+/// <summary>Модель данных "Магазин"</summary>
 struct Shop {
-
-public:
 	/// <summary>Уникальный идентификатор магазина</summary>
 	unsigned int id = 0;
 	/// <summary>Название магазина</summary>
@@ -14,7 +13,7 @@ public:
 	friend bool SaveStruct(DBStruct _DBStruct);
 
 	/// <summary>Заказы/покупки в магазине</summary>
-	std::vector <Order*> Orders;
+	vector <Order*> Orders;
 
 	/// <summary>Конструктор магазина</summary>
 	Shop(string name = "Магазин") {
@@ -37,32 +36,30 @@ public:
 	};
 
 	/// <summary>Конструктор магазина</summary>
+	/// <param name="name">Название магазина (по умолчанию = Магазин)</param>
 	static Shop* Create(string name = "Магазин") {
-		Shop* newShop = new Shop(); // Исползутеся конструктор, так что id автоматически будет установлен
-		newShop->name = name;
-		ShopStorage->Save();
+		Shop* newShop = new Shop(); // Использутеся конструктор, так что ID будет сгенерирован автоматически
+		newShop->name = name;		// Присваиваем название магазина из аргумента при вызове
+		ShopStorage->Save();		// Сохранение магазинов в БД на диск
 		return newShop;
 	};
 
-	/// <summary>Сохраняет данные на диск</summary>
-	static bool Save() {
-		return SaveStruct(ShopStorage);
-	};
+	/// <summary>Сохраняет элементы модели данных Shop на диск в Shops.json</summary>
+	static bool Save() { return SaveStruct(ShopStorage); };
 
 	/// <summary>Товары в магазине</summary>
 	struct products {
 	private:
-		std::vector <Product*> _Products; // Тут храним указатели на структуры самих товаров
+		/// <summary>Указатели на товары, которые можно приобрести в этом магазине</summary>
+		vector <Product*> _Products;
 	public:
 		/// <summary>Все товары этого магазина</summary>
-		/// <returns>Вовзращает массив товаров (vector)</returns>
-		std::vector <Product*> All() {
-			return _Products;
-		};
+		/// <returns>Возвращает массив товаров</returns>
+		vector <Product*> All() { return _Products; };
 
-		/// <summary>Выбор товара из массива по индексу</summary>
+		/// <summary>Выбор товара из массива по его индексу</summary>
 		/// <param name="index">Индекс по которому будет выбран товар</param>
-		/// <returns>Возвращает товар</returns>
+		/// <returns>Возвращает найденный товар, или нулевой элемент массива</returns>
 		Product* get(int index) {
 			try {
 				return _Products[index]; // При выходе за пределы, вываливается ошибка out_of_range
@@ -80,7 +77,7 @@ public:
 			}
 		};
 
-		/// <summary>Поиск индекса товара по ID</summary>
+		/// <summary>Поиск индекса товара по его ID</summary>
 		/// <param name="ID">Идентификатор товара</param>
 		unsigned int findIndexByID(unsigned int ID) {
 			int index = 0;
@@ -93,8 +90,9 @@ public:
 
 		/// <summary>Поиск всех товаров по имени при частичном совпадении</summary>
 		/// <param name="chars">Символы для частичного совпадения (с учетом регистра)</param>
-		std::vector <Product*> findByName(string chars) {
-			std::vector <Product*> _products;
+		/// <returns>Возвращает массив указателей на найденные товары</returns>
+		vector <Product*> findByName(string chars) {
+			vector <Product*> _products;
 			for (Product* product : this->_Products) {
 				if (product->name.find(chars) != std::string::npos) _products.push_back(product);
 			}
@@ -103,20 +101,24 @@ public:
 
 		/// <summary>Поиск товара по имени при частичном совпадении</summary>
 		/// <param name="chars">Символы для частичного совпадения (с учетом регистра)</param>
+		/// <returns>Возвращает указатель на найденный товар</returns>
 		Product* findOneByName(string chars) {
 			for (Product* product : this->_Products) {
 				if (product->name.find(chars) != std::string::npos) return product;
 			}
 		};
 
-		/// <summary>Добавляет товар в магазин и возвращает массив со всеми товарами</summary>
-		std::vector <Product*> Add(Product* product) {
-			this->_Products.push_back(product); // Добавляет в массив указатель на сам товар
-			ShopStorage->Save();
-			return this->_Products;
+		/// <summary>Добавление товара в магазин</summary>
+		/// <param name="product">Товар, который будет добавлен в магазин</param>
+		/// <returns>Возвращает массив указателей на товары этого магазина</returns>
+		vector <Product*> Add(Product* product) {
+			this->_Products.push_back(product);	// Добавление указателя на товар в массив с указателями на товары
+			ShopStorage->Save();				// Сохранение данных в БД на диске
+			return this->_Products;	
 		};
 
 		/// <summary>Удаление товара из магазина</summary>
+		/// <param name="product">Товар, который будет удалён из магазина (предарительно сохранившись в истории заказов)</param>
 		static bool Remove(Product* product) {
 			//TODO: Обратимся ко всем заказам с просьбой сохранить этот товар у себя - Order::backupProduct(product);
 			Shop* shop = ShopStorage;	// Будем проходить по каждому магазину

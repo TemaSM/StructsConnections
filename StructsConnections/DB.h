@@ -2,22 +2,22 @@
 #include "includes.h"
 
 namespace DB {
-	/// <summary>Принудительное сохранение структур в БД на диске</summary>
+	/// <summary>Сохранение данных в БД на диске</summary>
 	bool Save() {
 		bool success = false;
-		success = ProductStorage->Save();
-		success = ShopStorage->Save();
-		success = OrderStorage->Save();
+		success = ProductStorage->Save();	// Сохранение товаров
+		success = ShopStorage->Save();		// Сохранение магазинов
+		success = OrderStorage->Save();		// Сохранение заказов
 		return success;
 	};
 }
 
 template<typename DBStruct>
-/// <summary>Сохранение всей структуры в файл на диске</summary>
+/// <summary>Сохранение всей структуры в БД на диске</summary>
 bool SaveStruct(DBStruct _DBStruct) {
-	json DataJSON;
-	ofstream fs;
-	const char* type_name = typeid(_DBStruct).name();
+	json DataJSON;		// JSON объект в который будут записываться данные
+	ofstream fs;		// OutFileStream - выходной поток для записи файлов
+	const char* type_name = typeid(_DBStruct).name();	// Имя типа для определения типа структуры
 
 	// ProductStorage->Save()
 	if (type_name == typeid(ProductStorage).name())
@@ -87,18 +87,17 @@ bool SaveStruct(DBStruct _DBStruct) {
 	else
 		return false;
 
-	if (!fs) return false;		// Если не удалось, возвращаем false
-	fs << DataJSON.dump(2);		// Отправляем JSON
-	fs.close();					// Закрываем stream
-	return true;
+	if (!fs) return false;		// Если не удалось инициализировать ofstream, возвращаем false
+	fs << DataJSON.dump(2);		// Отправляем форматированный двойной табуляцией JSON в поток ofstream
+	fs.close();					// Закрываем ofstream
+	return true;				// Успешно выполнили запись
 }
 
 //TODO: Чтение данных с диска
 /*
 std::ifstream str_stream;
-//ofstream fout("test.json");
 ifstream fin("test.json");
 
 str_stream << fin.rdbuf();
-in = json::parse(str_stream.str());
+json in = json::parse(str_stream.str());
 */

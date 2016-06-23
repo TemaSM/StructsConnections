@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "includes.h"
 
+/// <summary>Модель данных "Заказ"</summary>
 struct Order {
+
 private:
 	/// <summary>Магазин которому принадлежит заказ</summary>
 	Shop* _Shop;
+	/// <summary>Общая стоимость всех товаров в заказе</summary>
 	float _costs = 0;
 public:
 	/// <summary>Уникальный идентификатор магазина</summary>
@@ -12,9 +15,9 @@ public:
 	Order *_prev = NULL, *_next = NULL;
 
 	/// <summary>Все товары в заказе</summary>
-	std::vector <Product*> Products;
+	vector <Product*> Products;
 
-	/// <summary>Вовзращает общую стоимость всех товаров в заказе</summary>
+	/// <summary>Общая стоимость всех товаров в заказе</summary>
 	float Costs() {
 		return _costs;
 	};
@@ -41,39 +44,40 @@ public:
 		}
 		this->_Shop = shop;					// Устанавливаем связь с магазином
 		shop->Orders.push_back(this);		// Добавляем текущий заказ в массив заказов/покупок магазина
-		OrderStorage->Save();
-		ShopStorage->Save();
+		OrderStorage->Save();				// Сохранение заказов в БД на диске
+		ShopStorage->Save();				// Сохранение магазинов в БД на диске
 	};
 
 	/// <summary>Добавляет товар корзину заказа</summary>
-	std::vector <Product*> AddProduct(Product* product, unsigned int quantity = 1) {
+	/// <param name="product">Товар, который будет добавлен в корзину</summary>
+	/// <param name="quantity">Количество товара (по умолчанию = 1)</summary>
+	vector <Product*> AddProduct(Product* product, unsigned int quantity = 1) {
 		for (Product* _product : this->_Shop->Products->All()) {
 			if (product->id == _product->id) {
-				if (product->quantity - quantity >= 0) {
-					this->_costs = this->_costs + (quantity * product->price);
-					product->quantity -= quantity;			// Уменьшаем кол-во товара
+				if (product->quantity - quantity >= 0) {	// Проверяем, можем ли купить столько товара
+					this->_costs = this->_costs + (quantity * product->price);	// Подсчитываем стооимость покупки такого кол-ва товара
+					product->quantity -= quantity;			// Уменьшаем кол-во товара на складе
 					this->Products.push_back(product);		// Добавляет в массив указатель на сам товар
 				}
 			}
 		}
-		OrderStorage->Save();
+		OrderStorage->Save();		// Сохранение заказов в БД на диске
 		return this->Products;
 	};
 	/// <summary>Сохранение копии товара внутри заказа</summary>
+	/// <param name="product">Товар, который будет сохранен в историю заказа</summary>
 	bool backupProduct(Product* product) {
 		for (Product* _product : this->Products) {
 			if (product->id == _product->id) {
 				_product->available = false; // Товар более не доступен
-				ProductStorage->Save();
-				OrderStorage->Save();
+				ProductStorage->Save();		// Сохранение товаров в БД на диске
+				OrderStorage->Save();		// Сохранение заказов в БД на диске
 				return true; // Успешно сохранили товар
 			}
 		}
 		return false; // Не стали сохранять товар (его нет в заказе)
 	};
-	/// <summary>Сохраняет данные на диск</summary>
-	static bool Save() {
-		return SaveStruct(OrderStorage);
-	};
+	/// <summary>Сохраняет элементы модели данных Order на диск в Orders.json</summary>
+	static bool Save() { return SaveStruct(OrderStorage); };
 
 } *OrderStorage;

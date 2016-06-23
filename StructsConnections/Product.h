@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "includes.h";
 
+/// <summary>Модель данных "Товар"</summary>
 struct Product {
 	/// <summary>Уникальный идентификатор товара</summary>
 	unsigned int id = 0;
@@ -76,9 +77,7 @@ struct Product {
 		ProductStorage->Save();
 	}
 
-	/// <summary>Сохраняет данные на диск</summary>
-	static bool Save() {
-		return SaveStruct(ProductStorage);
-	};
+	/// <summary>Сохраняет элементы модели данных Product на диск в Products.json</summary>
+	static bool Save() { return SaveStruct(ProductStorage); };
 
 } *ProductStorage;
