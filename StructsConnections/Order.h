@@ -8,12 +8,11 @@ private:
 	float _costs = 0;
 public:
 	/// <summary>Уникальный идентификатор магазина</summary>
-	unsigned int id;
+	unsigned int id = 0;
 	Order *_prev = NULL, *_next = NULL;
 
-
 	/// <summary>Все товары в заказе</summary>
-	std::vector <Product*> _Products;
+	std::vector <Product*> Products;
 
 	/// <summary>Вовзращает общую стоимость всех товаров в заказе</summary>
 	float Costs() {
@@ -27,7 +26,6 @@ public:
 	/// <param name="shop">Магазин в котором был оформлен заказ</param>
 	Order(Shop* shop) {
 		if (OrderStorage == NULL) { // Инициализация структуры
-			id = 0;
 			OrderStorage = this;			// Новый элемент становится текущим элементом
 			OrderStorage->_prev = NULL;		// Это хвост списка
 			OrderStorage->_next = NULL;		// Это голова списка
@@ -54,16 +52,16 @@ public:
 				if (product->quantity - quantity >= 0) {
 					this->_costs = this->_costs + (quantity * product->price);
 					product->quantity -= quantity;			// Уменьшаем кол-во товара
-					this->_Products.push_back(product);		// Добавляет в массив указатель на сам товар
+					this->Products.push_back(product);		// Добавляет в массив указатель на сам товар
 				}
 			}
 		}
 		OrderStorage->Save();
-		return this->_Products;
+		return this->Products;
 	};
 	/// <summary>Сохранение копии товара внутри заказа</summary>
 	bool backupProduct(Product* product) {
-		for (Product* _product : this->_Products) {
+		for (Product* _product : this->Products) {
 			if (product->id == _product->id) {
 				_product->available = false; // Товар более не доступен
 				ProductStorage->Save();

@@ -23,7 +23,6 @@ struct Product {
 	/// <summary>Конструктор товара</summary>
 	Product() {
 		if (ProductStorage == NULL) { // Инициализация структуры
-			id = 0;
 			ProductStorage = this;			// Новый элемент становится текущим элементом
 			ProductStorage->_prev = NULL;	// Это хвост списка
 			ProductStorage->_next = NULL;	// Это голова списка

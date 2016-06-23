@@ -63,7 +63,7 @@ bool SaveStruct(DBStruct _DBStruct) {
 				{ "shop", order->_Shop->id }
 			};
 
-			for (Product* product : order->_Products) {
+			for (Product* product : order->Products) {
 				// Если товар будет удалён из магазина, сохраним его копию прямо в заказе
 				if (product->available == false) {
 					DataJSON[order->id]["Products"].push_back({
