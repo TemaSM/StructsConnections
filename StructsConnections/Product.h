@@ -54,19 +54,14 @@ struct Product {
 	/// <summary>Конструктор товара в стиле интерфейса</summary>
 	static Product* Create() {
 		Product* newProduct = new Product();
-		cout << "Название товара: "; // Console::UI::write("Название товара: ");
+		cout << "Название товара: ";
 		cin >> newProduct->name;
-		// scanf_s("%s", &newProduct->name);
-		cout << "Артикул [целое число]: "; // Console::UI::write("Артикул [целое число]: ");
+		cout << "Артикул [целое число]: ";
 		cin >> newProduct->vendorCode;
-		//scanf_s("%u", &newProduct->vendorCode);
-		cout << "Стоимость в у.е. (с плавающей точкой) : "; //Console::UI::write("Стоимость в у.е. (с плавающей точкой) : ");
-															//scanf_s("%li", &newProduct->quantity);
+		cout << "Стоимость в у.е. (с плавающей точкой) : ";
 		cin >> newProduct->price;
-		cout << "Количество на складе [целое число]: "; // Console::UI::write("Количество на складе [целое число]: ");
+		cout << "Количество на складе [целое число]: ";
 		cin >> newProduct->quantity;
-		//scanf_s("%u", &newProduct->quantity);
-		// Console::UI::wait(0);
 		ProductStorage->Save();
 		return newProduct;
 	};
